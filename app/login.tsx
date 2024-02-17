@@ -14,9 +14,8 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem vindo!</Text>
-      <Text>This is a simple repo that emulates a login authentication flow using Expo Router.</Text>
-      <Text>Because this is focused on the navigation aspect, the logic itself of the app is not connected to any API.</Text>
+      <Text style={styles.title}>Welcome! 🌈 </Text>
+      <Text style={styles.paragraph} >This is a simple repo that emulates a login authentication workflow using Expo Router, focused on the navigation aspect.</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <TextInput 
         placeholder='Username(not required)'
@@ -47,13 +46,19 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  paragraph: {
+    margin: 24,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+
   separator: {
     marginVertical: 30,
     height: 1,
     width: '80%',
   },
   input: {
-    width: '90%',
+    width: '80%',
     borderWidth: 1,
     borderColor: '#000',
     padding: 10,
