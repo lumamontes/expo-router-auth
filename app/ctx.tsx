@@ -1,5 +1,5 @@
-import React from 'react';
-import { useStorageState } from './useStorageState';
+import React from "react";
+import { useStorageState } from "./useStorageState";
 
 const AuthContext = React.createContext<{
   signIn: () => void;
@@ -16,9 +16,9 @@ const AuthContext = React.createContext<{
 // This hook can be used to access the user info.
 export function useSession() {
   const value = React.useContext(AuthContext);
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV !== "production") {
     if (!value) {
-      throw new Error('useSession must be wrapped in a <SessionProvider />');
+      throw new Error("useSession must be wrapped in a <SessionProvider />");
     }
   }
 
@@ -26,22 +26,23 @@ export function useSession() {
 }
 
 export function SessionProvider(props: React.PropsWithChildren) {
-  const [[isLoading, session], setSession] = useStorageState('session');
+  const [[isLoading, session], setSession] = useStorageState("session");
   return (
     <AuthContext.Provider
       value={{
         signIn: () => {
-        // Add your login logic here
-        // For example purposes, we'll just set a fake session in storage
-        //This likely would be a JWT token or other session data
-        setSession('John Doe')
+          // Add your login logic here
+          // For example purposes, we'll just set a fake session in storage
+          //This likely would be a JWT token or other session data
+          setSession("John Doe");
         },
         signOut: () => {
           setSession(null);
         },
         session,
         isLoading,
-      }}>
+      }}
+    >
       {props.children}
     </AuthContext.Provider>
   );
