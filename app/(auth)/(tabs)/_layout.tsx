@@ -1,11 +1,12 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Link, Redirect, Tabs } from 'expo-router';
+import { Pressable, Text } from 'react-native';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { useSession } from '../../ctx';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -16,7 +17,18 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const { session, isLoading } = useSession();
+
   const colorScheme = useColorScheme();
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+   // Only require authentication within the (app) group's layout as users
+  // need to be able to access the (auth) group and sign in again.
+  if (!session) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <Tabs
@@ -57,3 +69,10 @@ export default function TabLayout() {
     </Tabs>
   );
 }
+   {/* <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="login" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
+        </Stack>
+      </ThemeProvider> */}

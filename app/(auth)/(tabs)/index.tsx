@@ -1,14 +1,24 @@
-import { StyleSheet } from 'react-native';
+import { Button, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { useSession } from '../../ctx';
 
 export default function TabOneScreen() {
+  const { signOut, session } = useSession();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
+      <Text>Welcome, {session}</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <EditScreenInfo path="app/(auth)/(tabs)/index.tsx" />
+      <Button
+        title="Sign Out"
+        onPress={() => {
+          // The `app/(app)/_layout.tsx` will redirect to the sign-in screen.
+          signOut();
+        }}
+      />
     </View>
   );
 }
