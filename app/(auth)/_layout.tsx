@@ -1,6 +1,6 @@
 import { Redirect, Stack } from 'expo-router';
 
-import { useSession } from '../ctx';
+import { useSession } from '../../services/session/ctx';
 import { Text } from '@/components/Themed';
 
 export default function AppLayout() {

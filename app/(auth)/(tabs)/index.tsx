@@ -2,7 +2,8 @@ import { Button, StyleSheet } from "react-native";
 
 import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
-import { useSession } from "../../ctx";
+import { useSession } from "../../../services/session/ctx";
+import { Link } from "expo-router";
 
 export default function TabOneScreen() {
   const { signOut, session } = useSession();
@@ -23,6 +24,7 @@ export default function TabOneScreen() {
           signOut();
         }}
       />
+      <Link href={'/details'}>Details</Link>
     </View>
   );
 }
@@ -32,6 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: '#7F00FF'
   },
   title: {
     fontSize: 20,

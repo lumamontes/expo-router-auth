@@ -1,6 +1,6 @@
 import { Button, StyleSheet, TextInput } from "react-native";
 import { Text, View } from "@/components/Themed";
-import { useSession } from "./ctx";
+import { useSession } from "../services/session/ctx";
 import { router } from "expo-router";
 
 export default function Login() {
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: '#7F00FF'
   },
   title: {
     fontSize: 20,
