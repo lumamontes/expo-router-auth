@@ -18,27 +18,7 @@ import { Image } from "@/components/ui/image";
 import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import { router } from "expo-router";
-
-const products = [
-  {
-    id: "1",
-    name: "Notebook",
-    price: 1200,
-    image: require("@/assets/images/notbook.jpeg"),
-  },
-  {
-    id: "2",
-    name: "Celular",
-    price: 800,
-    image: require("@/assets/images/celular.jpg"),
-  },
-  {
-    id: "3",
-    name: "Fone de ouvido",
-    price: 150,
-    image: require("@/assets/images/fone-ouvido.webp"),
-  },
-];
+import { products } from "@/utils/product";
 
 export default function Login() {
   const [recognizing, setRecognizing] = useState(false);
