@@ -13,11 +13,14 @@ import {
   FlatList,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Card } from "@/components/ui/card";
+import { Image } from "@/components/ui/image";
+import { Heading } from "@/components/ui/heading";
 
 const products = [
-  { id: "1", name: "Notebook", price: 1200 },
-  { id: "2", name: "Celular", price: 800 },
-  { id: "3", name: "Fone de ouvido", price: 150 },
+  { id: "1", name: "Notebook", price: 1200, image: require("@/assets/images/notbook.jpeg") },
+  { id: "2", name: "Celular", price: 800, image: require("@/assets/images/celular.jpg") },
+  { id: "3", name: "Fone de ouvido", price: 150, image: require("@/assets/images/fone-ouvido.webp") },
 ];
 
 export default function Login() {
@@ -60,16 +63,25 @@ export default function Login() {
           data={products}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.productName}>{item.name}</Text>
-              <Text style={styles.productPrice}>R${item.price}</Text>
+            <Card className="p-5 rounded-lg max-w-[360px] m-3">
+              <Image
+                source={item.image}
+                className="mb-6 h-[240px] w-full rounded-md aspect-[263/240]"
+                alt={item.name}
+              />
+              <Heading size="md" className="mb-4">
+                {item.name}
+              </Heading>
+              <Text className="text-sm font-normal mb-2 text-typography-700">
+                Preço: R$ {item.price}
+              </Text>
               <TouchableOpacity
                 style={styles.addButton}
                 onPress={() => setCart((prev) => [...prev, item.name])}
               >
-                <Text style={styles.addButtonText}>Adicionar</Text>
+                <Text style={styles.addButtonText}>Adicionar ao Carrinho</Text>
               </TouchableOpacity>
-            </View>
+            </Card>
           )}
         />
         <Text style={styles.heading}>Carrinho</Text>
@@ -96,8 +108,13 @@ export default function Login() {
       </ScrollView>
 
       <TouchableOpacity
-        style={styles.floatingButton}
-        onPress={recognizing ? () => ExpoSpeechRecognitionModule.stop() : handleStart}
+        style={[
+          styles.floatingButton,
+          { backgroundColor: recognizing ? "#6300ee59" : "#6200ee" },
+        ]}
+        onPress={
+          recognizing ? () => ExpoSpeechRecognitionModule.stop() : handleStart
+        }
       >
         <MaterialIcons
           name={recognizing ? "mic-off" : "mic"}

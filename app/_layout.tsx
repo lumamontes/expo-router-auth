@@ -1,4 +1,6 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import "@/global.css";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
@@ -38,14 +40,14 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return <GluestackUIProvider mode="light"><RootLayoutNav /></GluestackUIProvider>;
 }
 import { Slot } from "expo-router";
 
 function RootLayoutNav() {
   return (
-    <SessionProvider>
-      <Slot />
-    </SessionProvider>
+    <GluestackUIProvider mode="light"><SessionProvider>
+        <Slot />
+      </SessionProvider></GluestackUIProvider>
   );
 }
