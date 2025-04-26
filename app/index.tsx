@@ -30,16 +30,42 @@ export default function Login() {
 
   useSpeechRecognitionEvent("start", () => setRecognizing(true));
   useSpeechRecognitionEvent("end", () => setRecognizing(false));
+
+  const addedItems = new Set<string>();
+
   useSpeechRecognitionEvent("result", (event) => {
     const spokenText = event.results[0]?.transcript.toLowerCase();
     setTranscript(spokenText);
+    console.log('addedItems', addedItems);
+    if (spokenText.includes("celular") && !addedItems.has("celular")) {
+      addToCart({
+        name: "Celular",
+        price: 800,
+        image: require("@/assets/images/celular.jpg"),
+        id: Math.random().toString(36).substring(7),
+      });
+      addedItems.add("celular");
+    }
 
-    addToCart({
-      name: 'Celular',
-      price: 0,
-      image: require("@/assets/images/celular.jpg"),
-      id: Math.random().toString(36).substring(7), 
-    });
+    if (spokenText.includes("notebook") && !addedItems.has("notebook")) {
+      addToCart({
+        name: "Notebook",
+        price: 2000,
+        image: require("@/assets/images/notbook.jpeg"),
+        id: Math.random().toString(36).substring(7),
+      });
+      addedItems.add("notebook");
+    }
+
+    if (spokenText.includes("fone") && !addedItems.has("fone")) {
+      addToCart({
+        name: "Fone de Ouvido",
+        price: 200,
+        image: require("@/assets/images/fone-ouvido.webp"),
+        id: Math.random().toString(36).substring(7),
+      });
+      addedItems.add("fone");
+    }
   });
 
   useSpeechRecognitionEvent("error", (event) => {
