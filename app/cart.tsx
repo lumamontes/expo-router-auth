@@ -30,6 +30,8 @@ export default function CartScreen() {
     );
   }
 
+  console.log("cartItems", cartItems);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Meu Carrinho</Text>
@@ -95,7 +97,6 @@ export default function CartScreen() {
         <TouchableOpacity
           style={styles.checkoutButton}
           onPress={() => {
-            // Implement checkout functionality
             alert('Implementar checkout!');
           }}
         >

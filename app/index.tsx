@@ -35,7 +35,7 @@ export default function Login() {
     setTranscript(spokenText);
 
     addToCart({
-      name: spokenText,
+      name: 'Celular',
       price: 0,
       image: require("@/assets/images/celular.jpg"),
       id: Math.random().toString(36).substring(7), 
@@ -59,8 +59,6 @@ export default function Login() {
     });
   };
 
-  console.log("cartItems", cartItems);
-
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -75,7 +73,9 @@ export default function Login() {
             {/* if there are products in the cart, add an icon to show the number of items */}
             {cartItems.length > 0 && (
               <View className="absolute -top-1 -left-4 bg-red-500 rounded-full w-5 h-5 justify-center items-center z-0">
-                <Text className="text-white text-xs">{cartItems.length}</Text>
+                <Text className="text-white text-xs">
+                  {cartItems.reduce((total, item) => total + (item.quantity || 1), 0)}
+                </Text>
               </View>
             )}
             <MaterialIcons 
