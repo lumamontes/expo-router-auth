@@ -1,67 +1,51 @@
-import { Button, StyleSheet, TextInput } from "react-native";
-import { Text, View } from "@/components/Themed";
-import { useSession } from "./ctx";
-import { router } from "expo-router";
+import {
+  ExpoSpeechRecognitionModule,
+  useSpeechRecognitionEvent,
+} from "expo-speech-recognition";
+import { useState } from "react";
+import { Button, ScrollView, Text, View } from "react-native";
 
 export default function Login() {
-  const { signIn } = useSession();
-  const handleLogin = () => {
-    //Adicione sua lógica de login aqui
-    signIn();
-    //Antes de navegar, tenha certeza de que o usuário está autenticado
-    router.replace("/");
+  const [recognizing, setRecognizing] = useState(false);
+  const [transcript, setTranscript] = useState("");
+
+  useSpeechRecognitionEvent("start", () => setRecognizing(true));
+  useSpeechRecognitionEvent("end", () => setRecognizing(false));
+  useSpeechRecognitionEvent("result", (event) => {
+    setTranscript(event.results[0]?.transcript);
+  });
+  useSpeechRecognitionEvent("error", (event) => {
+    console.log("error code:", event.error, "error message:", event.message);
+  });
+
+  const handleStart = async () => {
+    const result = await ExpoSpeechRecognitionModule.requestPermissionsAsync();
+    if (!result.granted) {
+      console.warn("Permissions not granted", result);
+      return;
+    }
+    // Start speech recognition
+    ExpoSpeechRecognitionModule.start({
+      lang: "pt-BR",
+      interimResults: true,
+      continuous: false,
+    });
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Welcome! 🌈 </Text>
-      <Text style={styles.paragraph}>
-        This is a simple repo that emulates a login authentication workflow
-        using Expo Router, focused on the navigation aspect.
-      </Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <TextInput placeholder="Username(not required)" style={styles.input} />
-      <TextInput
-        placeholder="Password(not required)"
-        secureTextEntry
-        style={styles.input}
-      />
-      <Button title="Login" onPress={handleLogin} />
+    <View>
+      {!recognizing ? (
+        <Button title="Start" onPress={handleStart} />
+      ) : (
+        <Button
+          title="Stop"
+          onPress={() => ExpoSpeechRecognitionModule.stop()}
+        />
+      )}
+
+      <ScrollView>
+        <Text>{transcript}</Text>
+      </ScrollView>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  paragraph: {
-    margin: 24,
-    fontSize: 18,
-    textAlign: "center",
-  },
-
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-  input: {
-    width: "80%",
-    borderWidth: 1,
-    borderColor: "#000",
-    padding: 10,
-    margin: 10,
-    borderRadius: 4,
-  },
-});
