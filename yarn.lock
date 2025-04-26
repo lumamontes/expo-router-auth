@@ -5120,6 +5120,11 @@ join-component@^1.1.0:
   resolved "https://registry.npmjs.org/join-component/-/join-component-1.1.0.tgz"
   integrity sha512-bF7vcQxbODoGK1imE2P9GS9aw4zD0Sd+Hni68IMZLj7zRnquH7dXUmMw9hDI5S/Jzt7q+IyTXN0rSg2GI0IKhQ==
 
+jotai@^2.12.3:
+  version "2.12.3"
+  resolved "https://registry.npmjs.org/jotai/-/jotai-2.12.3.tgz"
+  integrity sha512-DpoddSkmPGXMFtdfnoIHfueFeGP643nqYUWC6REjUcME+PG2UkAtYnLbffRDw3OURI9ZUTcRWkRGLsOvxuWMCg==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz"

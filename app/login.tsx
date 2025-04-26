@@ -16,11 +16,28 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { Card } from "@/components/ui/card";
 import { Image } from "@/components/ui/image";
 import { Heading } from "@/components/ui/heading";
+import { HStack } from "@/components/ui/hstack";
+import { router } from "expo-router";
 
 const products = [
-  { id: "1", name: "Notebook", price: 1200, image: require("@/assets/images/notbook.jpeg") },
-  { id: "2", name: "Celular", price: 800, image: require("@/assets/images/celular.jpg") },
-  { id: "3", name: "Fone de ouvido", price: 150, image: require("@/assets/images/fone-ouvido.webp") },
+  {
+    id: "1",
+    name: "Notebook",
+    price: 1200,
+    image: require("@/assets/images/notbook.jpeg"),
+  },
+  {
+    id: "2",
+    name: "Celular",
+    price: 800,
+    image: require("@/assets/images/celular.jpg"),
+  },
+  {
+    id: "3",
+    name: "Fone de ouvido",
+    price: 150,
+    image: require("@/assets/images/fone-ouvido.webp"),
+  },
 ];
 
 export default function Login() {
@@ -58,7 +75,20 @@ export default function Login() {
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={styles.heading}>Produtos</Text>
+        <HStack className="justify-between items-center mb-4">
+          <Text style={styles.heading}>Produtos</Text>
+          <TouchableOpacity
+            onPress={() => {
+              setCart([]);
+              setTranscript("");
+              router.push("/(auth)/cart");
+            }}
+
+          >
+            <MaterialIcons name="shopping-cart" size={24} color="#6200ee" />
+          </TouchableOpacity>
+        </HStack>
+
         <FlatList
           data={products}
           keyExtractor={(item) => item.id}
