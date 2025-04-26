@@ -19,11 +19,14 @@ import { Heading } from "@/components/ui/heading";
 import { HStack } from "@/components/ui/hstack";
 import { router } from "expo-router";
 import { products } from "@/utils/product";
+import { addToCartAtom, cartItemsAtom } from "@/cartAtoms";
+import { useAtom, useSetAtom } from "jotai";
 
 export default function Login() {
   const [recognizing, setRecognizing] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [cart, setCart] = useState<string[]>([]);
+  const addToCart = useSetAtom(addToCartAtom);
+  const [cartItems] = useAtom(cartItemsAtom);
 
   useSpeechRecognitionEvent("start", () => setRecognizing(true));
   useSpeechRecognitionEvent("end", () => setRecognizing(false));
@@ -31,8 +34,12 @@ export default function Login() {
     const spokenText = event.results[0]?.transcript.toLowerCase();
     setTranscript(spokenText);
 
-    // Extract quantity and product name from the spoken text
-    setCart(["Celular"]);
+    addToCart({
+      name: spokenText,
+      price: 0,
+      image: require("@/assets/images/celular.jpg"),
+      id: Math.random().toString(36).substring(7), 
+    });
   });
 
   useSpeechRecognitionEvent("error", (event) => {
@@ -52,21 +59,32 @@ export default function Login() {
     });
   };
 
+  console.log("cartItems", cartItems);
+
   return (
     <View style={styles.container}>
       <ScrollView>
         <HStack className="justify-between items-center mb-4">
           <Text style={styles.heading}>Produtos</Text>
-          <TouchableOpacity
+            <TouchableOpacity
             onPress={() => {
-              setCart([]);
               setTranscript("");
-              router.push("/(auth)/cart");
+              router.push("/cart");
             }}
-
-          >
-            <MaterialIcons name="shopping-cart" size={24} color="#6200ee" />
-          </TouchableOpacity>
+            >
+            {/* if there are products in the cart, add an icon to show the number of items */}
+            {cartItems.length > 0 && (
+              <View className="absolute -top-1 -left-4 bg-red-500 rounded-full w-5 h-5 justify-center items-center z-0">
+                <Text className="text-white text-xs">{cartItems.length}</Text>
+              </View>
+            )}
+            <MaterialIcons 
+              name="shopping-cart" 
+              className="relative z-10"
+              size={32} 
+              color="#6200ee" 
+            />
+            </TouchableOpacity>
         </HStack>
 
         <FlatList
@@ -87,32 +105,17 @@ export default function Login() {
               </Text>
               <TouchableOpacity
                 style={styles.addButton}
-                onPress={() => setCart((prev) => [...prev, item.name])}
+                // onPress={() => setCart((prev) => [...prev, item.name])}
+                onPress={() => {
+                  console.log('Adding to cart:', item);
+                  addToCart(item);
+                }}
               >
                 <Text style={styles.addButtonText}>Adicionar ao Carrinho</Text>
               </TouchableOpacity>
             </Card>
           )}
         />
-        <Text style={styles.heading}>Carrinho</Text>
-        {cart.length > 0 ? (
-          <View style={styles.cartContainer}>
-            {cart.map((item, index) => (
-              <View key={index} style={styles.cartItem}>
-                <Text style={styles.cartItemText}>{item}</Text>
-                <TouchableOpacity
-                  onPress={() =>
-                    setCart((prev) => prev.filter((_, i) => i !== index))
-                  }
-                >
-                  <MaterialIcons name="delete" size={20} color="#ff0000" />
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-        ) : (
-          <Text style={styles.emptyCartText}>Seu carrinho está vazio</Text>
-        )}
         <Text style={styles.heading}>Transcrição</Text>
         <Text>{transcript}</Text>
       </ScrollView>
